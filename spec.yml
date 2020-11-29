@@ -1,0 +1,39 @@
+---
+swagger: 2.0
+info:
+  description: This is a demo
+  version: 1.0.0
+  title: DELILAH PROJECT
+  contact:
+    email: delilah@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: virtserver.swaggerhub.com
+basePath: /delilah/1.0.0
+tags:
+- name: admin
+  description: Secured Admin-only calls
+- name: client
+  description: Operations available to regular developers
+schemes:
+- https
+paths:
+  /pedidos:
+    get:
+      summary: Lista los pedidos
+  /pedidos/{id}:
+    put: 
+      summary: actualiza el estado de un pedido
+    get:
+      summary: muestra información de un pedido
+    delete:
+      summary: cancela una orden 
+  /productos:
+    get:
+      summary: Lista los productos
+  /favoritos:
+    get:
+      summary: Lista los productos
+    
+
