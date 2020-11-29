@@ -21,7 +21,10 @@ schemes:
 paths:
   /pedidos:
     get:
-      summary: Lista los pedidos
+      summary: lista los pedidos
+      parameters:
+    post:
+      summary: confirma un nuevo pedido
   /pedidos/{id}:
     put: 
       summary: actualiza el estado de un pedido
@@ -31,9 +34,31 @@ paths:
       summary: cancela una orden 
   /productos:
     get:
-      summary: Lista los productos
+      summary: lista los productos
+    post:
+      summary: agrega un nuevo producto disponble para la venta
+  /productos/{id}:
+    delete:
+      summary: quita un producto de la venta
+    patch:
+      summary: actualiza precios del producto 
   /favoritos:
     get:
-      summary: Lista los productos
+      summary: lista los productos
+    delete:
+      summary: borra un producto favoritos
+  /usuarios:
+    get:
+      summary: lista los usuarios
+      produces:
+      - application/json
+    post:
+      summary: agrega un nuevo usuario 
+  /usuarios/{id}:
+    get:
+      summary: expone los datos de un usuario
+    patch:
+      summary: actualiza los datos de un usuario
+    
     
 
