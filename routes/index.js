@@ -1,11 +1,13 @@
 const user = require('../controllers/user');
 
+
+
 function routes(app) {
-    app.route('/users/:id?/')
-        .get(user.get)
-        .post(user.create)
-        .put(user.update)
-        .delete(user.delete)
+    app.get('/users', user.listAll)
+    app.get('/users/:id/', user.get)
+    app.post('/users', user.create)
+    app.put('/users/:id/', user.update);
+    app.delete('/users/:id/', user.remove);
 }
 
 module.exports = routes;

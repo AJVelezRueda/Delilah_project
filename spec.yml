@@ -42,11 +42,6 @@ paths:
       summary: quita un producto de la venta
     patch:
       summary: actualiza precios del producto 
-  /favoritos:
-    get:
-      summary: lista los productos
-    delete:
-      summary: borra un producto favoritos
   /usuarios:
     get:
       summary: lista los usuarios
@@ -59,6 +54,11 @@ paths:
       summary: expone los datos de un usuario
     patch:
       summary: actualiza los datos de un usuario
+  /usuarios/{id}/favoritos:
+    get:
+      summary: lista los productos favortos de un usuario
+    delete:
+      summary: borra un producto favoritos del usuario
     
     
 

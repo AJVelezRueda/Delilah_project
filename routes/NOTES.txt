@@ -1,0 +1,6 @@
+- Dentro de la carpeta root tengo un archivo que contendrá todas las rutas, es decir el mapeo HTTP rest, 
+  donde se vuelcan los métodos HTTP de mi aplicación.
+
+- Dentro de la carpeta controllers, los módulos que manejan la interacción ente la vista y el modelo. Tendré uno por cada ruta.
+
+- En la raíz del proyecto tengo el app.js 
