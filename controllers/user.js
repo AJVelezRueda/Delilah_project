@@ -1,4 +1,5 @@
 let users = [];
+let favorites = [];
 
 function findUserById(id) {
     return users.find(it => it.id === id);
@@ -45,10 +46,36 @@ function remove(req, res) {
     res.json(users).status(201);
 }
 
+//¿Cómo es que se generan los id para les usuaries y como es que sabe el front?
+//¿Debería pasarle en el userCreate un id o cuando se loguea?
+function createFavorite(req, res) {
+    const favorite = {
+        favorite: req.body.favorite,
+        userId: req.body.userId
+    };
+
+    favorites.push(favorite);
+
+    res.json(favorite).status(201);
+}
+
+function deleteUserFavorite(id) {
+    favorites = favorites.filter(it => it.userId === id)
+}
+
+
+function removeFavorites(req, res) {
+    deleteUserFavorite(req.body.id);
+
+    res.json(favorite).status(201);
+}
+
 module.exports = {
     listAll,
     get,
     create,
     update,
-    remove
+    remove,
+    createFavorite,
+    removeFavorites
 };

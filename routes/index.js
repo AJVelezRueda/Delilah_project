@@ -8,6 +8,8 @@ function routes(app) {
     app.post('/users', user.create)
     app.put('/users/:id/', user.update);
     app.delete('/users/:id/', user.remove);
+    app.post('/users/:id/favoritos', user.createFavorite);
+    app.delete('/users/:id/favoritos', user.removeFavorites);
 }
 
 module.exports = routes;
