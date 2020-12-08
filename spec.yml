@@ -42,6 +42,11 @@ paths:
       summary: quita un producto de la venta
     patch:
       summary: actualiza precios del producto 
+  /productos/{id}/status:
+    get:
+      summary: devuelve el status de un pedido
+    put:
+      summary: actualiza precios del producto 
   /usuarios:
     get:
       summary: lista los usuarios

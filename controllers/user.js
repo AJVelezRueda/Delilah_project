@@ -30,7 +30,7 @@ function create(req, res) {
     res.json(user).status(201);
 }
 
-function update(req, res) {
+function updateUser(req, res) {
     const user = findUserById(req.body.id);
 
     user.name = req.body.name;
@@ -74,7 +74,7 @@ module.exports = {
     listAll,
     get,
     create,
-    update,
+    updateUser,
     remove,
     createFavorite,
     removeFavorites
