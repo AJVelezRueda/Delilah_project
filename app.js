@@ -1,5 +1,5 @@
 const express = require("express");
-const rateLimit = require("express-rate-limit");
+//const rateLimit = require("express-rate-limit");
 const routes = require("./routes/index.js");
 const app = express();
 
