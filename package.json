@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./app.js",
+    "test": "mocha --timeout 10000"
   },
   "repository": {
     "type": "git",
@@ -17,7 +18,13 @@
   },
   "homepage": "https://github.com/AJVelezRueda/delilah_project#readme",
   "dependencies": {
-    "expres": "0.0.5",
-    "express-rate-limit": "^5.2.3"
+    "express": "4.17.1",
+    "express-rate-limit": "^5.2.3",
+    "sequelize": "6.3.5"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^8.2.1"
   }
 }

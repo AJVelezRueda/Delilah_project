@@ -1,12 +1,13 @@
 let users = [];
 let favorites = [];
+let userId = 1;
 
 function findUserById(id) {
     return users.find(it => it.id === id);
 }
 
 function deleteUserById(id) {
-    users = users.filter(it => it.id === id)
+    users = users.filter(it => it.id !== id)
 }
 
 function listAll(req, res) {
@@ -14,12 +15,13 @@ function listAll(req, res) {
 }
 
 function get(req, res) {
-    res.json(findUserById(req.body.id))
+    res.json(findUserById(Number(req.params.id)))
         .status(200);
 }
 
 function create(req, res) {
     const user = {
+        id: userId++,
         name: req.body.name,
         email: req.body.email,
         password: req.body.password
@@ -31,19 +33,19 @@ function create(req, res) {
 }
 
 function updateUser(req, res) {
-    const user = findUserById(req.body.id);
+    const user = findUserById(Number(req.params.id));
 
     user.name = req.body.name;
     user.email = req.body.email;
     user.password = req.body.password;
 
-    res.json(user).status(201);
+    res.json(user).status(200);
 }
 
 function remove(req, res) {
-    deleteUserById(req.body.id);
+    deleteUserById(Number(req.params.id));
 
-    res.json(users).status(201);
+    res.status(200);
 }
 
 //¿Cómo es que se generan los id para les usuaries y como es que sabe el front?
