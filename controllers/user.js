@@ -1,6 +1,10 @@
-let users = [];
-let favorites = [];
-let userId = 1;
+const { Sequelize, QueryTypes } = require("sequelize");
+
+const db = new Sequelize('test', 'root', 'CULO1234', {
+    host: 'localhost',
+    port: 3306,
+    dialect: 'mysql'
+})
 
 function findUserById(id) {
     return users.find(it => it.id === id);
@@ -11,7 +15,9 @@ function deleteUserById(id) {
 }
 
 function listAll(req, res) {
-    res.json({ users }).status(200);
+    db.query("select * from users", { type: QueryTypes.SELECT })
+        .then(users => res.json({ users }).status(200));
+
 }
 
 function get(req, res) {
