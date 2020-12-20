@@ -7,15 +7,27 @@ const db = new Sequelize('test', 'root', 'CULO1234', {
 })
 
 async function clean() {
-    await db.query("truncate users" ,{type: QueryTypes.BULKDELETE});
+    await db.query("truncate users", { type: QueryTypes.BULKDELETE });
 }
 
-function findUserById(id) {
-    return users.find(it => it.id === id);
+async function findUserById(id) {
+    const users = await db.query(`select * from users where id = :id`, {
+        replacements: { id: id },
+        type: QueryTypes.SELECT
+    });
+
+    if (users.length === 0) {
+        throw new Error('No existe el usuario');
+    }
+    
+    return users[0];
 }
 
-function deleteUserById(id) {
-    users = users.filter(it => it.id !== id)
+async function deleteUserById(id) {
+    await db.query(`select * from users where id = :id`, {
+        replacements: { id: id },
+        type: QueryTypes.DELETE
+    });
 }
 
 async function listAll(req, res) {
@@ -23,8 +35,8 @@ async function listAll(req, res) {
     res.json({ users }).status(200);
 }
 
-function get(req, res) {
-    res.json(findUserById(Number(req.params.id)))
+async function get(req, res) {
+    res.json(await findUserById(Number(req.params.id)))
         .status(200);
 }
 
@@ -36,11 +48,12 @@ async function create(req, res) {
 
     const result = await db.query(`
         insert into users (name, email) values (:name, :email)
-    ` ,{ 
+    ` , {
         replacements: user,
-        type: QueryTypes.INSERT 
+        type: QueryTypes.INSERT
     });
-    res.json(result).status(201);
+
+    res.json({ id: result[0] }).status(201);
 }
 
 function updateUser(req, res) {
@@ -59,8 +72,6 @@ function remove(req, res) {
     res.status(200);
 }
 
-//¿Cómo es que se generan los id para les usuaries y como es que sabe el front?
-//¿Debería pasarle en el userCreate un id o cuando se loguea?
 function createFavorite(req, res) {
     const favorite = {
         favorite: req.body.favorite,
