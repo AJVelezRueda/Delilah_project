@@ -24,7 +24,7 @@ async function findUserById(id) {
 }
 
 async function deleteUserById(id) {
-    await db.query(`select * from users where id = :id`, {
+    await db.query(`delete from users where id = :id`, {
         replacements: { id: id },
         type: QueryTypes.DELETE
     });
@@ -74,13 +74,13 @@ async function updateUser(req, res) {
         type: QueryTypes.UPDATE
     });
 
-    res.status(200);
+    res.status(200).end();
 }
 
 async function remove(req, res) {
     await deleteUserById(Number(req.params.id));
 
-    res.status(200);
+    res.status(200).end();
 }
 
 function createFavorite(req, res) {

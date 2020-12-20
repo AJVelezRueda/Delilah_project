@@ -53,24 +53,33 @@ describe('Users', () => {
 
     });
 
-    describe('POST /users/:id', () => {
-        it('should return a singleton list whith an specific user', async () => {
+    describe('PUT /users/:id', () => {
+        it('should return a 200 status after making a PUT', async () => {
             const {body} = await agent.post('/users').send({ name: "Simone De beauvoir", email: "broken@gmail.com" })
             const userId = body.id;
-            const res = await agent.get(`/users/${userId}`)
+            const res = await agent.put(`/users/${userId}`).send({ name: "Simone De beauvoir", email: "broken@yahoo.com" })
             assert.equal(res.status, 200);
-        });
 
+            const newres = await agent.get(`/users/${userId}`)
+            assert.equal(newres.status, 200);
+            assert.deepEqual(newres.body, {
+                id: userId,
+                name: "Simone De beauvoir",
+                email: "broken@yahoo.com"
+            });
+        });
     });
 
-
-
     describe('DELETE /users/:id', () => {
-        it('should delete a user', async () => {
+        it('should return an empty list after deleting a user', async () => {
             const {body} = await agent.post('/users').send({ name: "Robert Machi", email: "patriarcado@gmail.com" })
             const userId = body.id;
-            const res = await agent.get(`/users/${userId}`)
+            const res = await agent.delete(`/users/${userId}`)
             assert.equal(res.status, 200);
+
+            const newres = await agent.get('/users')
+            assert.equal(newres.status, 200);
+            assert.deepEqual(newres.body, { users: [] });
         });
     });
 });
