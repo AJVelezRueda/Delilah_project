@@ -56,18 +56,29 @@ async function create(req, res) {
     res.json({ id: result[0] }).status(201);
 }
 
-function updateUser(req, res) {
-    const user = findUserById(Number(req.params.id));
+async function updateUser(req, res) {
+    const id = Number(req.params.id)
 
-    user.name = req.body.name;
-    user.email = req.body.email;
-    user.password = req.body.password;
+    await findUserById(id);
 
-    res.json(user).status(200);
+    const user = {
+        id,
+        name: req.body.name,
+        email:  req.body.email
+    }
+
+    await db.query(`
+        update users set name = :name, email = :email where id = :id
+    ` , {
+        replacements: user,
+        type: QueryTypes.UPDATE
+    });
+
+    res.status(200);
 }
 
-function remove(req, res) {
-    deleteUserById(Number(req.params.id));
+async function remove(req, res) {
+    await deleteUserById(Number(req.params.id));
 
     res.status(200);
 }
