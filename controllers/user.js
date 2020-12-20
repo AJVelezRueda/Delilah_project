@@ -6,6 +6,10 @@ const db = new Sequelize('test', 'root', 'CULO1234', {
     dialect: 'mysql'
 })
 
+async function clean() {
+    await db.query("truncate users" ,{type: QueryTypes.BULKDELETE});
+}
+
 function findUserById(id) {
     return users.find(it => it.id === id);
 }
@@ -14,10 +18,9 @@ function deleteUserById(id) {
     users = users.filter(it => it.id !== id)
 }
 
-function listAll(req, res) {
-    db.query("select * from users", { type: QueryTypes.SELECT })
-        .then(users => res.json({ users }).status(200));
-
+async function listAll(req, res) {
+    const users = await db.query("select * from users", { type: QueryTypes.SELECT });
+    res.json({ users }).status(200);
 }
 
 function get(req, res) {
@@ -25,17 +28,19 @@ function get(req, res) {
         .status(200);
 }
 
-function create(req, res) {
+async function create(req, res) {
     const user = {
-        id: userId++,
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password
     };
 
-    users.push(user);
-
-    res.json(user).status(201);
+    const result = await db.query(`
+        insert into users (name, email) values (:name, :email)
+    ` ,{ 
+        replacements: user,
+        type: QueryTypes.INSERT 
+    });
+    res.json(result).status(201);
 }
 
 function updateUser(req, res) {
@@ -79,6 +84,7 @@ function removeFavorites(req, res) {
 }
 
 module.exports = {
+    clean,
     listAll,
     get,
     create,
