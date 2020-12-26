@@ -27,4 +27,28 @@ describe('Products', () => {
             });
         });
     });
+
+    describe('POST /products', () => {
+        it('should return a product id', async () => {
+            const {body} = await agent.post('/products').send({ name: "Brownie relleno", price: "150.00" })
+            const productId = body.id;
+
+            assert.equal(productId, 1);
+        });
+    });
+
+    describe('GET /products/:id', () => {
+        it('should return a singleton list whith an specific product', async () => {
+            const {body} = await agent.post('/products').send({ name: "Carbonada", price:"250.00"})
+            const productId = body.id;
+            const res = await agent.get(`/products/${productId}`)
+            
+            assert.equal(res.status, 200);
+            assert.deepEqual(res.body, {
+                id: productId,
+                name: "Carbonada",
+                price:"250.00"
+            });
+        });
+    });
 });

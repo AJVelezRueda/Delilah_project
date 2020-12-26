@@ -32,6 +32,11 @@ paths:
       summary: muestra información de un pedido
     delete:
       summary: cancela una orden 
+  /pedidos/{id}/status:
+    get:
+      summary: devuelve el status de un pedido
+    put:
+      summary: actualiza precios del producto 
   /productos:
     get:
       summary: lista los productos
@@ -41,11 +46,6 @@ paths:
     delete:
       summary: quita un producto de la venta
     patch:
-      summary: actualiza precios del producto 
-  /productos/{id}/status:
-    get:
-      summary: devuelve el status de un pedido
-    put:
       summary: actualiza precios del producto 
   /usuarios:
     get:
@@ -64,6 +64,3 @@ paths:
       summary: lista los productos favortos de un usuario
     delete:
       summary: borra un producto favoritos del usuario
-    
-    
-

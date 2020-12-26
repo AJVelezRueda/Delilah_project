@@ -15,6 +15,7 @@ function routes(app) {
     app.get('/pedidos', pedidos.getPedidos);
     app.post('/pedidos', pedidos.buy);
     app.get('/products', products.listAll);
+    app.get('/products/:id/', products.get);
     app.post('/products', products.create)
 }
 
