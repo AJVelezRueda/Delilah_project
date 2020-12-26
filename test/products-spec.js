@@ -83,6 +83,4 @@ describe('Products', () => {
             assert.deepEqual(newres.body, { products: [] });
         });
     });
-
-
 });

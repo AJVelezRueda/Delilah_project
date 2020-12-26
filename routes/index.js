@@ -17,8 +17,8 @@ function routes(app) {
     app.put('/products/:id/', products.update);
     app.post('/products', products.create);
     app.delete('/products/:id/', products.remove);
-    app.get('/pedidos', pedidos.getPedidos);
-    app.post('/pedidos', pedidos.buy)
+    app.get('/pedidos', pedidos.listAll);
+    app.post('/pedidos', pedidos.create)
 }
 
 module.exports = routes;
