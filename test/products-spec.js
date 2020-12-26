@@ -51,4 +51,38 @@ describe('Products', () => {
             });
         });
     });
+
+    describe('PUT /products/:id', () => {
+        it('should return a singleton list whith an specific product after updating the data', async () => {
+            const {body} = await agent.post('/products').send({ name: "Hamburguesa completa", price:"450.00"})
+            const productId = body.id;
+            const res = await agent.put(`/products/${productId}`).send({ name: "Hamburguesa completa", price:"350.00"})
+            assert.equal(res.status,200);
+
+            const newres = await agent.get(`/products/${productId}`)
+
+            assert.equal(newres.status, 200);
+            assert.deepEqual(newres.body, {
+                id: productId,
+                name: "Hamburguesa completa",
+                price:"350.00"
+            });
+        });
+    });
+
+    describe('DELETE /products/:id', () => {
+        it('should return 200 status after deleting a product', async () => {
+            const {body} = await agent.post('/products').send({ name: "Flan", price:"150.00"})
+            const productId = body.id;
+            const res = await agent.delete(`/products/${productId}`);
+            assert.equal(res.status, 200);
+
+            const newres = await agent.get('/products');
+            
+            assert.equal(newres.status, 200);
+            assert.deepEqual(newres.body, { products: [] });
+        });
+    });
+
+
 });

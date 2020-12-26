@@ -12,11 +12,13 @@ function routes(app) {
     app.delete('/users/:id/', user.remove);
     app.post('/users/:id/favoritos', user.createFavorite);
     app.delete('/users/:id/favoritos', user.removeFavorites);
-    app.get('/pedidos', pedidos.getPedidos);
-    app.post('/pedidos', pedidos.buy);
     app.get('/products', products.listAll);
     app.get('/products/:id/', products.get);
-    app.post('/products', products.create)
+    app.put('/products/:id/', products.update);
+    app.post('/products', products.create);
+    app.delete('/products/:id/', products.remove);
+    app.get('/pedidos', pedidos.getPedidos);
+    app.post('/pedidos', pedidos.buy)
 }
 
 module.exports = routes;

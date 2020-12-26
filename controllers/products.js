@@ -61,16 +61,16 @@ async function update(req, res) {
 
     await findProductById(id);
 
-    const user = {
+    const product = {
         id,
         name: req.body.name,
-        email:  req.body.email
+        price:  req.body.price
     }
 
     await db.query(`
-        update users set name = :name, email = :email where id = :id
+        update products set name = :name, price = :price where id = :id
     ` , {
-        replacements: user,
+        replacements: product,
         type: QueryTypes.UPDATE
     });
 
