@@ -7,49 +7,49 @@ const db = new Sequelize('test', 'root', 'CULO1234', {
 })
 
 async function clean() {
-    await db.query("truncate users", { type: QueryTypes.BULKDELETE });
+    await db.query("truncate products", { type: QueryTypes.BULKDELETE });
 }
 
-async function findUserById(id) {
-    const users = await db.query(`select * from users where id = :id`, {
+async function findProductById(id) {
+    const products = await db.query(`select * from products where id = :id`, {
         replacements: { id: id },
         type: QueryTypes.SELECT
     });
 
-    if (users.length === 0) {
+    if (products.length === 0) {
         throw new Error('No existe el usuario');
     }
     
-    return users[0];
+    return products[0];
 }
 
-async function deleteUserById(id) {
-    await db.query(`delete from users where id = :id`, {
+async function deleteProductById(id) {
+    await db.query(`delete from products where id = :id`, {
         replacements: { id: id },
         type: QueryTypes.DELETE
     });
 }
 
 async function listAll(req, res) {
-    const users = await db.query("select * from users", { type: QueryTypes.SELECT });
-    res.json({ users }).status(200);
+    const products = await db.query("select * from products", { type: QueryTypes.SELECT });
+    res.json({ products }).status(200);
 }
 
 async function get(req, res) {
-    res.json(await findUserById(Number(req.params.id)))
+    res.json(await findProductById(Number(req.params.id)))
         .status(200);
 }
 
 async function create(req, res) {
-    const user = {
+    const products = {
         name: req.body.name,
-        email: req.body.email,
+        price: req.body.price,
     };
 
     const result = await db.query(`
-        insert into users (name, email) values (:name, :email)
+        insert into products (name, price) values (:name, :price)
     ` , {
-        replacements: user,
+        replacements: products,
         type: QueryTypes.INSERT
     });
 
@@ -59,7 +59,7 @@ async function create(req, res) {
 async function update(req, res) {
     const id = Number(req.params.id)
 
-    await findUserById(id);
+    await findProductById(id);
 
     const user = {
         id,
@@ -78,31 +78,9 @@ async function update(req, res) {
 }
 
 async function remove(req, res) {
-    await deleteUserById(Number(req.params.id));
+    await deleteProductById(Number(req.params.id));
 
     res.status(200).end();
-}
-
-function createFavorite(req, res) {
-    const favorite = {
-        favorite: req.body.favorite,
-        userId: req.body.userId
-    };
-
-    favorites.push(favorite);
-
-    res.json(favorite).status(201);
-}
-
-function deleteUserFavorite(id) {
-    favorites = favorites.filter(it => it.userId === id)
-}
-
-
-function removeFavorites(req, res) {
-    deleteUserFavorite(req.body.id);
-
-    res.json(favorite).status(201);
 }
 
 module.exports = {
@@ -112,6 +90,4 @@ module.exports = {
     create,
     update,
     remove,
-    createFavorite,
-    removeFavorites
 };
