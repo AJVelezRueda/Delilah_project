@@ -16,6 +16,10 @@ describe('Orders', () => {
     beforeEach(async() => await orders.clean());
     beforeEach(async() => await user.clean());
 
+    afterEach(async() => await products.clean());
+    afterEach(async() => await orders.clean());
+    afterEach(async() => await user.clean());
+
     describe('GET /orders', () => {
         it('should return an empty list when there are no orders', async() => {
             const res = await agent.get('/orders')

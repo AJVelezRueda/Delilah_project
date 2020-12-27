@@ -11,6 +11,7 @@ const agent = chai.request.agent(server);
 
 describe('Users', () => {
     beforeEach(async() => await user.clean());
+    afterEach(async() => await user.clean());
     describe('GET /users', () => {
         it('should return an empty list when there are no users', async() => {
             const res = await agent.get('/users')

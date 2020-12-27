@@ -11,6 +11,8 @@ const agent = chai.request.agent(server);
 
 describe('Products', () => {
     beforeEach(async() => await products.clean());
+    afterEach(async() => await products.clean());
+
     describe('GET /products', () => {
         it('should return an empty list when there are no products', async() => {
             const res = await agent.get('/products')
@@ -73,6 +75,7 @@ describe('Products', () => {
         it('should return 200 status after deleting a product', async() => {
             const { body } = await agent.post('/products').send({ name: "Flan", price: "150.00" })
             const productId = body.id;
+
             const res = await agent.delete(`/products/${productId}`);
             assert.equal(res.status, 200);
 
