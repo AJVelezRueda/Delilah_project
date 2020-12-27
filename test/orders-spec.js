@@ -24,29 +24,51 @@ describe('Orders', () => {
         });
 
         it('should return a singleton list when there is an order recently created', async() => {
-            const { bodyProduct } = await agent.post('/products').send({ name: "Tamales", price: "250.00" })
-            const productId = bodyProduct.id;
-            const resProd = await agent.get(`/products/${productId}`)
+            const { body: bodyProduct } = await agent.post('/products').send({ name: "Tamales", price: "250.00" })
+            const product_id = bodyProduct.id;
 
-            assert.equal(resProd.status, 200);
-            assert.deepEqual(resProd.bodyProduct, {
-                id: productId,
-                name: "Tamales",
-                price: "250.00"
-            });
+            const { body: bodyUser } = await agent.post('/users').send({ name: "Pendorcho Flores", email: "elFlores@gmail.com" })
+            const user_id = bodyUser.id;
 
-            const { bodyuser } = await agent.post('/users').send({ name: "Rita Segato", email: "laGranRita@gmail.com" })
-            const userId = bodyuser.id;
-
-            assert.equal(userId, 1);
-
-            await agent.post('/orders').send({ user_id: userId, product_id: productId, description: "veggie", address: "calle falsa 123", payment_method: "efectivo" })
+            await agent.post('/orders').send({
+                user_id: user_id,
+                product_id: product_id,
+                description: "veggie",
+                address: "calle falsa 123",
+                payment_method: "cash"
+            })
             const res = await agent.get('/orders')
 
-            assert.equal(res.status, 200);
             assert.deepEqual(res.body, {
-                orders: [{ id: 1, status: 'nuevo', user_id: userId, product_id: productId, description: "veggie", address: "calle falsa 123", payment_method: "efectivo" }]
+                orders: [{
+                    id: 1,
+                    status: 'nuevo',
+                    user_id: user_id,
+                    product_id: product_id,
+                    description: "veggie",
+                    address: "calle falsa 123",
+                    payment_method: "cash"
+                }]
             });
+        });
+
+
+        it('should return a singleton list when there is an order recently created', async() => {
+            const { body: bodyProduct } = await agent.post('/products').send({ name: "Tamales", price: "250.00" })
+            const product_id = bodyProduct.id;
+
+            const { body: bodyUser } = await agent.post('/users').send({ name: "Pendorcho Flores", email: "elFlores@gmail.com" })
+            const user_id = bodyUser.id;
+
+            const { body } = await agent.post('/orders').send({
+                user_id: user_id,
+                product_id: product_id,
+                description: "veggie",
+                address: "calle falsa 123",
+                payment_method: "cash"
+            });
+
+            assert.deepEqual(body, { id: 1 })
         });
     });
 });

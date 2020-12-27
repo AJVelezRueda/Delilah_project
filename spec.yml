@@ -19,20 +19,20 @@ tags:
 schemes:
 - https
 paths:
-  /pedidos:
+  /orders:
     get:
       summary: lista los pedidos
       parameters:
     post:
       summary: confirma un nuevo pedido
-  /pedidos/{id}:
+  /orders/{id}:
     put: 
       summary: actualiza el estado de un pedido
     get:
       summary: muestra información de un pedido
     delete:
       summary: cancela una orden 
-  /pedidos/{id}/status:
+  /orders/{id}/status:
     get:
       summary: devuelve el status de un pedido
     put:

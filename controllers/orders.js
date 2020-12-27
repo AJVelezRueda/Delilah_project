@@ -29,15 +29,16 @@ async function deleteOrdersById(id) {
 }
 
 
-function listAll(req, res) {
+async function listAll(req, res) {
+    const orders = await db.query("select * from orders", { type: QueryTypes.SELECT });
     res.json({ orders }).status(200);
 }
 
 async function create(req, res) {
     const order = {
         status: 'nuevo',
-        user_id: req.body.userId,
-        product_id: req.body.productId,
+        user_id: req.body.user_id,
+        product_id: req.body.product_id,
         description: req.body.description,
         address: req.body.address,
         payment_method: req.body.payment_method
@@ -45,7 +46,8 @@ async function create(req, res) {
 
     try {
         const result = await db.query(`
-        insert into orders (status, price, description, address, payment_method) values (:status, :price, :description, address:, payment_method:)
+        insert into orders (status, user_id, product_id, description, address, payment_method) 
+                    values (:status, :user_id, :product_id, :description, :address, :payment_method)
     `, {
             replacements: order,
             type: QueryTypes.INSERT
@@ -69,7 +71,7 @@ async function update(req, res) {
     order.id = req.body.id,
         order.status = req.body.status,
         order.user_id = req.body.user_id,
-        order.product_id = req.body.productId,
+        order.product_id = req.body.product_id,
         order.description = req.body.description,
         order.address = req.body.address,
         order.payment_method = req.body.payment_method
