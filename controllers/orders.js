@@ -1,10 +1,5 @@
-const { Sequelize, QueryTypes } = require("sequelize");
-
-const db = new Sequelize('test', 'root', 'CULO1234', {
-    host: 'localhost',
-    port: 3306,
-    dialect: 'mysql'
-})
+const { QueryTypes } = require("sequelize");
+const db = require("../database");
 
 async function clean() {
     await db.query("truncate Pedidos", { type: QueryTypes.BULKDELETE });
@@ -20,7 +15,7 @@ function findPedidoById(id) {
     if (pedidos.length === 0) {
         throw new Error('No existe el usuario');
     }
-    
+
     return pedidos[0];
 }
 
@@ -47,7 +42,7 @@ function create(req, res) {
 
     const result = await db.query(`
         insert into products (status, price, descripcion, direccion, pago) values (:status, :price, :descripcion, direccion:, pago:)
-    ` , {
+    `, {
         replacements: products,
         type: QueryTypes.INSERT
     });

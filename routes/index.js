@@ -1,7 +1,6 @@
 const user = require('../controllers/user');
-const pedidos = require('../controllers/orders');
 const products = require('../controllers/products');
-const products = require('../controllers/orders');
+//const orders = require('../controllers/orders');
 
 
 
@@ -18,8 +17,8 @@ function routes(app) {
     app.put('/products/:id/', products.update);
     app.post('/products', products.create);
     app.delete('/products/:id/', products.remove);
-    app.get('/orders', orders.listAll);
-    app.post('/orders', orders.create)
+    //app.get('/orders', orders.listAll);
+    //app.post('/orders', orders.create)
 }
 
 module.exports = routes;

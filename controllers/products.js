@@ -1,10 +1,5 @@
-const { Sequelize, QueryTypes } = require("sequelize");
-
-const db = new Sequelize('test', 'root', 'CULO1234', {
-    host: 'localhost',
-    port: 3306,
-    dialect: 'mysql'
-})
+const { QueryTypes } = require("sequelize");
+const db = require("../database");
 
 async function clean() {
     await db.query("truncate products", { type: QueryTypes.BULKDELETE });
@@ -19,7 +14,7 @@ async function findProductById(id) {
     if (products.length === 0) {
         throw new Error('No existe el usuario');
     }
-    
+
     return products[0];
 }
 
@@ -46,14 +41,18 @@ async function create(req, res) {
         price: req.body.price,
     };
 
-    const result = await db.query(`
-        insert into products (name, price) values (:name, :price)
-    ` , {
-        replacements: products,
-        type: QueryTypes.INSERT
-    });
+    try {
+        const result = await db.query(`
+            insert into products (name, price) values (:name, :price)
+        `, {
+            replacements: products,
+            type: QueryTypes.INSERT
+        });
 
-    res.json({ id: result[0] }).status(201);
+        res.json({ id: result[0] }).status(201);
+    } catch (e) {
+        res.json({ message: e.message }).status(500);
+    }
 }
 
 async function update(req, res) {
@@ -64,12 +63,12 @@ async function update(req, res) {
     const product = {
         id,
         name: req.body.name,
-        price:  req.body.price
+        price: req.body.price
     }
 
     await db.query(`
         update products set name = :name, price = :price where id = :id
-    ` , {
+    `, {
         replacements: product,
         type: QueryTypes.UPDATE
     });

@@ -1,10 +1,5 @@
-const { Sequelize, QueryTypes } = require("sequelize");
-
-const db = new Sequelize('test', 'root', 'CULO1234', {
-    host: 'localhost',
-    port: 3306,
-    dialect: 'mysql'
-})
+const { QueryTypes } = require("sequelize");
+const db = require("../database");
 
 async function clean() {
     await db.query("truncate users", { type: QueryTypes.BULKDELETE });
@@ -19,7 +14,7 @@ async function findUserById(id) {
     if (users.length === 0) {
         throw new Error('No existe el usuario');
     }
-    
+
     return users[0];
 }
 
@@ -48,7 +43,7 @@ async function create(req, res) {
 
     const result = await db.query(`
         insert into users (name, email) values (:name, :email)
-    ` , {
+    `, {
         replacements: user,
         type: QueryTypes.INSERT
     });
@@ -64,12 +59,12 @@ async function update(req, res) {
     const user = {
         id,
         name: req.body.name,
-        email:  req.body.email
+        email: req.body.email
     }
 
     await db.query(`
         update users set name = :name, email = :email where id = :id
-    ` , {
+    `, {
         replacements: user,
         type: QueryTypes.UPDATE
     });
