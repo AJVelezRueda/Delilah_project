@@ -8,21 +8,21 @@ async function clean() {
 }
 
 
-function findOrderById(id) {
-    const orders = await db.query(`select * from Orders where id = :id`, {
+async function findOrderById(id) {
+    const orders = await db.query(`select * from orders where id = :id`, {
         replacements: { id: id },
         type: QueryTypes.SELECT
     });
 
     if (orders.length === 0) {
-        throw new Error('No existe el usuario');
+        throw new Error('The order does not exist');
     }
 
-    return Orders[0];
+    return orders[0];
 }
 
 async function deleteOrdersById(id) {
-    await db.query(`delete from Orders where id = :id`, {
+    await db.query(`delete from orders where id = :id`, {
         replacements: { id: id },
         type: QueryTypes.DELETE
     });
@@ -30,22 +30,22 @@ async function deleteOrdersById(id) {
 
 
 function listAll(req, res) {
-    res.json({ Orders }).status(200);
+    res.json({ orders }).status(200);
 }
 
-function create(req, res) {
+async function create(req, res) {
     const order = {
         status: 'nuevo',
         user_id: req.body.userId,
         product_id: req.body.productId,
         description: req.body.description,
-        direccion: req.body.direccion,
-        pago: req.body.pago
+        address: req.body.address,
+        payment_method: req.body.payment_method
     };
 
     try {
         const result = await db.query(`
-        insert into orders (status, price, description, direccion, pago) values (:status, :price, :description, direccion:, pago:)
+        insert into orders (status, price, description, address, pago) values (:status, :price, :description, address:, pago:)
     `, {
             replacements: order,
             type: QueryTypes.INSERT
@@ -63,17 +63,18 @@ function get(req, res) {
         .status(200);
 }
 
-function update(req, res) {
-    const pedido = findOrderById(req.body.id);
+async function update(req, res) {
+    const order = findOrderById(req.body.id);
 
-    pedido.id = req.body.id,
-        pedido.status = req.body.status,
-        pedido.usuario = req.body.usuario,
-        pedido.description = req.body.description,
-        pedido.direccion = req.body.direccion,
-        pedido.pago = req.body.pago
+    order.id = req.body.id,
+        order.status = req.body.status,
+        order.user_id = req.body.user_id,
+        order.product_id = req.body.productId,
+        order.description = req.body.description,
+        order.address = req.body.address,
+        order.payment_method = req.body.payment_method
 
-    res.json(pedido).status(201);
+    res.json(order).status(201);
 }
 
 async function remove(req, res) {
