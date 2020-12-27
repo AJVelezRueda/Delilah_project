@@ -17,3 +17,10 @@ CREATE TABLE users (
 
 - Los tests se corren parados en la carpeta haciendo:
     npm run test
+
+
+TO DO
+
+- Hacer favoritos
+- hacer la tabla intermedia de "items" que tenga las columnas "pedido_id", "products_id", "cantidad"
+- cambiar el create de pedidos para que acepte una lista de productos y su cantidad 
