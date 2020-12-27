@@ -32,18 +32,19 @@ function listAll(req, res) {
 }
 
 function create(req, res) {
-    const pedido = {
+    const order = {
         status: 'nuevo',
-        usuario: req.body.usuario,
+        user_id: req.body.userId,
+        product_id: req.body.productId,
         descripcion: req.body.descripcion,
         direccion: req.body.direccion,
         pago: req.body.pago
     };
 
     const result = await db.query(`
-        insert into products (status, price, descripcion, direccion, pago) values (:status, :price, :descripcion, direccion:, pago:)
+        insert into orders (status, price, descripcion, direccion, pago) values (:status, :price, :descripcion, direccion:, pago:)
     `, {
-        replacements: products,
+        replacements: order,
         type: QueryTypes.INSERT
     });
 
