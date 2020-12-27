@@ -33,8 +33,12 @@ async function listAll(req, res) {
 }
 
 async function get(req, res) {
-    res.json(await findProductById(Number(req.params.id)))
-        .status(200);
+    try {
+        res.json(await findProductById(Number(req.params.id)))
+            .status(200);
+    } catch (e) {
+        res.json({ message: e.message }).status(500);
+    };
 }
 
 async function create(req, res) {
@@ -79,9 +83,13 @@ async function update(req, res) {
 }
 
 async function remove(req, res) {
-    await deleteProductById(Number(req.params.id));
+    try {
+        await deleteProductById(Number(req.params.id));
+        res.status(200).end();
+    } catch (e) {
+        res.json({ message: e.message }).status(500);
+    }
 
-    res.status(200).end();
 }
 
 module.exports = {
