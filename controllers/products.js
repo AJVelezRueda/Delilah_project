@@ -62,24 +62,33 @@ async function create(req, res) {
 }
 
 async function update(req, res) {
-    const id = Number(req.params.id)
+    const id = Number(req.params.id);
 
-    await findProductById(id);
+    try {
+        await findProductById(id);
 
-    const product = {
-        id,
-        name: req.body.name,
-        price: req.body.price
+        const product = {
+            id,
+            name: req.body.name,
+            price: req.body.price
+        }
+
+        await db.query(`
+            update products set name = :name, price = :price where id = :id
+        `, {
+            replacements: product,
+            type: QueryTypes.UPDATE
+        });
+
+        res.status(200).end();
+    } catch (e) {
+        if (e.message == 'No existe el usuario') {
+            res.status(404).end();
+        } else {
+            res.status(500).end();
+        }
     }
 
-    await db.query(`
-        update products set name = :name, price = :price where id = :id
-    `, {
-        replacements: product,
-        type: QueryTypes.UPDATE
-    });
-
-    res.status(200).end();
 }
 
 async function remove(req, res) {
