@@ -45,7 +45,7 @@ async function create(req, res) {
 
     try {
         const result = await db.query(`
-        insert into orders (status, price, description, address, pago) values (:status, :price, :description, address:, pago:)
+        insert into orders (status, price, description, address, payment_method) values (:status, :price, :description, address:, payment_method:)
     `, {
             replacements: order,
             type: QueryTypes.INSERT
