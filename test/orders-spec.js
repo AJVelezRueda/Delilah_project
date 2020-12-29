@@ -11,11 +11,9 @@ chai.use(chaiHttp);
 const agent = chai.request.agent(server);
 
 describe('Orders', () => {
-    beforeEach(async() => await products.clean());
     beforeEach(async() => await orders.clean());
     beforeEach(async() => await user.clean());
 
-    afterEach(async() => await products.clean());
     afterEach(async() => await orders.clean());
     afterEach(async() => await user.clean());
 
@@ -57,7 +55,6 @@ describe('Orders', () => {
 
             const { body } = await agent.post('/orders').send({
                 user_id: user_id,
-                item_id: item_id,
                 description: "veggie",
                 address: "calle falsa 123",
                 payment_method: "cash"
