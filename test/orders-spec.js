@@ -6,7 +6,6 @@ const server = require('../app');
 const assert = chai.assert;
 const orders = require('../controllers/orders');
 const user = require('../controllers/user');
-const items = require('../controllers/products');
 chai.use(chaiHttp);
 
 const agent = chai.request.agent(server);
@@ -28,15 +27,11 @@ describe('Orders', () => {
         });
 
         it('should return a singleton list when there is an order recently created', async() => {
-            const { body: bodyProduct } = await agent.post('/items').send({ name: "Tamales", price: "250.00" })
-            const item_id = bodyitem.id;
-
-            const { body: bodyUser } = await agent.post('/users').send({ name: "Pendorcho Flores", email: "elFlores@gmail.com" })
+            const { body: bodyUser } = await agent.post('/users').send({ name: "Pendorcho Flores", email: "elFlores@gmail.com" });
             const user_id = bodyUser.id;
 
             await agent.post('/orders').send({
                 user_id: user_id,
-                item_id: item_id,
                 description: "veggie",
                 address: "calle falsa 123",
                 payment_method: "cash"
@@ -48,7 +43,6 @@ describe('Orders', () => {
                     id: 1,
                     status: 'nuevo',
                     user_id: user_id,
-                    item_id: item_id,
                     description: "veggie",
                     address: "calle falsa 123",
                     payment_method: "cash"
@@ -58,9 +52,6 @@ describe('Orders', () => {
 
 
         it('should return a singleton list when there is an order recently created', async() => {
-            const { body: bodyitem } = await agent.post('/items').send({ name: "Tamales", price: "250.00" })
-            const item_id = bodyitem.id;
-
             const { body: bodyUser } = await agent.post('/users').send({ name: "Pendorcho Flores", email: "elFlores@gmail.com" })
             const user_id = bodyUser.id;
 

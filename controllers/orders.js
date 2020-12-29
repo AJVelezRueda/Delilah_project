@@ -35,10 +35,10 @@ async function listAll(req, res) {
 }
 
 async function create(req, res) {
+
     const order = {
         status: 'nuevo',
         user_id: req.body.user_id,
-        item_id: req.body.item_id,
         description: req.body.description,
         address: req.body.address,
         payment_method: req.body.payment_method
@@ -46,8 +46,8 @@ async function create(req, res) {
 
     try {
         const result = await db.query(`
-        insert into orders (status, user_id, item_id, description, address, payment_method) 
-                    values (:status, :user_id, :item_id, :description, :address, :payment_method)
+        insert into orders (status, user_id, description, address, payment_method) 
+                    values (:status, :user_id, :description, :address, :payment_method)
     `, {
             replacements: order,
             type: QueryTypes.INSERT
@@ -71,7 +71,6 @@ async function update(req, res) {
     order.id = req.body.id,
         order.status = req.body.status,
         order.user_id = req.body.user_id,
-        order.item_id = req.body.item_id,
         order.description = req.body.description,
         order.address = req.body.address,
         order.payment_method = req.body.payment_method
