@@ -25,6 +25,21 @@ async function findOrderById(id) {
     return orders[0];
 }
 
+async function allItmesByOrder(order_id) {
+    const items = await db.query(`select * from items where order_id = :order_id
+    `, {
+        replacements: { order_id: order_id },
+        type: QueryTypes.SELECT
+    });
+
+    if (items.length === 0) {
+        throw new Error('The order does not exist');
+    }
+
+    return items;
+}
+
+
 async function deleteOrdersById(id) {
     await db.query(`delete from orders where id = :id`, {
         replacements: { id: id },
@@ -88,12 +103,12 @@ async function create(req, res) {
 }
 
 function get(req, res) {
-    res.json(findOrderById(req.body.status))
+    res.json(findOrderById(rreq.params.id))
         .status(200);
 }
 
 async function update(req, res) {
-    const order = findOrderById(req.body.id);
+    const order = findOrderById(req.params.id);
 
     order.id = req.body.id,
         order.status = req.body.status,
