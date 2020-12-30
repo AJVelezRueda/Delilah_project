@@ -62,4 +62,21 @@ describe('Orders', () => {
             });
         });
     });
+
+    describe('GET /orders/:id', () => {
+        it('should return a singleton list when there is an order recently created', async() => {
+            const { user_id, product_id } = await orderABrownie();
+
+            const res = await agent.get('/orders/1')
+            assert.deepEqual(res.body, {
+                id: 1,
+                status: 'nuevo',
+                user_id: user_id,
+                items: [{ id: product_id, cantidad: "3.00", name: "Brownie relleno" }],
+                description: "veggie",
+                address: "calle falsa 123",
+                payment_method: "cash"
+            });
+        });
+    });
 });

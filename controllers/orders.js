@@ -23,7 +23,7 @@ async function findOrderById(id) {
     }
 
     const order = orders[0];
-    order.items = allItmesByOrder(id);
+    order.items = await allItmesByOrder(id);
 
     return order;
 }
@@ -31,7 +31,8 @@ async function findOrderById(id) {
 async function allItmesByOrder(order_id) {
     const items = await db.query(`SELECT
     items.cantidad,
-    products.name
+    products.name,
+    products.id
     FROM items
     INNER JOIN products ON products.id = items.product_id
     WHERE items.order_id = :order_id
@@ -109,20 +110,20 @@ async function create(req, res) {
     }
 }
 
-function get(req, res) {
-    res.json(findOrderById(rreq.params.id))
+async function get(req, res) {
+    res.json(await findOrderById(Number(req.params.id)))
         .status(200);
 }
 
 async function update(req, res) {
-    const order = findOrderById(req.params.id);
+    const order = await findOrderById(req.params.id);
 
-    order.id = req.params.id,
-        order.status = req.body.status,
-        order.user_id = req.body.user_id,
-        order.description = req.body.description,
-        order.address = req.body.address,
-        order.payment_method = req.body.payment_method
+    order.id = req.params.id;
+    order.status = req.body.status;
+    order.user_id = req.body.user_id;
+    order.description = req.body.description;
+    order.address = req.body.address;
+    order.payment_method = req.body.payment_method
 
     res.json(order).status(201);
 }
