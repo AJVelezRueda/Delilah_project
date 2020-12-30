@@ -22,13 +22,21 @@ async function findOrderById(id) {
         throw new Error('The order does not exist');
     }
 
-    return orders[0];
+    const order = orders[0];
+    order.items = allItmesByOrder(id);
+
+    return order;
 }
 
 async function allItmesByOrder(order_id) {
-    const items = await db.query(`select * from items where order_id = :order_id
+    const items = await db.query(`SELECT
+    items.cantidad,
+    products.name
+    FROM items
+    INNER JOIN products ON products.id = items.product_id
+    WHERE items.order_id = :order_id
     `, {
-        replacements: { order_id: order_id },
+        replacements: { order_id },
         type: QueryTypes.SELECT
     });
 
@@ -38,7 +46,6 @@ async function allItmesByOrder(order_id) {
 
     return items;
 }
-
 
 async function deleteOrdersById(id) {
     await db.query(`delete from orders where id = :id`, {
