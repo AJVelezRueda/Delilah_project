@@ -110,7 +110,7 @@ function get(req, res) {
 async function update(req, res) {
     const order = findOrderById(req.params.id);
 
-    order.id = req.body.id,
+    order.id = req.params.id,
         order.status = req.body.status,
         order.user_id = req.body.user_id,
         order.description = req.body.description,
