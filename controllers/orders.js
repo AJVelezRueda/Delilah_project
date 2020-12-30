@@ -9,7 +9,6 @@ async function clean() {
     await db.query("SET FOREIGN_KEY_CHECKS = 0;");
     await db.query("truncate items", { type: QueryTypes.BULKDELETE });
     await db.query("SET FOREIGN_KEY_CHECKS = 1;");
-
 }
 
 
@@ -111,16 +110,6 @@ async function remove(req, res) {
 
     res.status(200).end();
 }
-
-
-async function clean() {
-
-}
-
-async function createItem(req, res) {
-
-}
-
 
 module.exports = {
     clean,
