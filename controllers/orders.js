@@ -5,9 +5,11 @@ async function clean() {
     await db.query("SET FOREIGN_KEY_CHECKS = 0;");
     await db.query("truncate orders", { type: QueryTypes.BULKDELETE });
     await db.query("SET FOREIGN_KEY_CHECKS = 1;");
+
     await db.query("SET FOREIGN_KEY_CHECKS = 0;");
     await db.query("truncate items", { type: QueryTypes.BULKDELETE });
     await db.query("SET FOREIGN_KEY_CHECKS = 1;");
+
 }
 
 
