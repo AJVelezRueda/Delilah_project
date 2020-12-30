@@ -32,7 +32,7 @@ describe('Products', () => {
 
     describe('POST /products', () => {
         it('should return a product id', async() => {
-            const { body } = await agent.post('/products').send({ name: "Brownie relleno", price: "150.00" })
+            const { body } = await agent.post('/products').send({ name: "Brownie relleno", price: "150.00" });
 
             assert.deepEqual(body, { id: 1 });
         });

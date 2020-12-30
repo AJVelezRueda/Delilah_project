@@ -28,12 +28,17 @@ describe('Orders', () => {
             const { body: bodyUser } = await agent.post('/users').send({ name: "Pendorcho Flores", email: "elFlores@gmail.com" });
             const user_id = bodyUser.id;
 
+            const { body: bodyProducts } = await agent.post('/products').send({ name: "Brownie relleno", price: "150.00" });
+            const product_id = bodyProducts.id;
+
             await agent.post('/orders').send({
                 user_id: user_id,
+                items: [{ product_id, cantidad: 3 }],
                 description: "veggie",
                 address: "calle falsa 123",
                 payment_method: "cash"
             })
+
             const res = await agent.get('/orders')
 
             assert.deepEqual(res.body, {
@@ -49,7 +54,7 @@ describe('Orders', () => {
         });
 
 
-        it('should return a singleton list when there is an order recently created', async() => {
+        it('should return a singleton list when there is an order has been recently created', async() => {
             const { body: bodyUser } = await agent.post('/users').send({ name: "Pendorcho Flores", email: "elFlores@gmail.com" })
             const user_id = bodyUser.id;
 

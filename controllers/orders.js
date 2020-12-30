@@ -5,6 +5,9 @@ async function clean() {
     await db.query("SET FOREIGN_KEY_CHECKS = 0;");
     await db.query("truncate orders", { type: QueryTypes.BULKDELETE });
     await db.query("SET FOREIGN_KEY_CHECKS = 1;");
+    await db.query("SET FOREIGN_KEY_CHECKS = 0;");
+    await db.query("truncate items", { type: QueryTypes.BULKDELETE });
+    await db.query("SET FOREIGN_KEY_CHECKS = 1;");
 }
 
 
@@ -34,8 +37,26 @@ async function listAll(req, res) {
     res.json({ orders }).status(200);
 }
 
-async function create(req, res) {
+async function insertItems(order_id, items) {
+    for (let item of items) {
+        const newItem = {
+            product_id: item.product_id,
+            cantidad: item.cantidad,
+            order_id
+        };
 
+        await db.query(`
+        insert into items (product_id, cantidad, order_id) 
+                    values (:product_id, :cantidad, :order_id)
+    `, {
+            replacements: newItem,
+            type: QueryTypes.INSERT
+        });
+    }
+}
+
+
+async function create(req, res) {
     const order = {
         status: 'nuevo',
         user_id: req.body.user_id,
@@ -43,6 +64,7 @@ async function create(req, res) {
         address: req.body.address,
         payment_method: req.body.payment_method
     };
+    const items = req.body.items;
 
     try {
         const result = await db.query(`
@@ -53,11 +75,15 @@ async function create(req, res) {
             type: QueryTypes.INSERT
         });
 
+        const order_id = result[0];
+
+        insertItems(order_id, items);
+
         res.json({ id: result[0] }).status(201);
+
     } catch (e) {
         res.json({ message: e.message }).status(500);
     }
-
 }
 
 function get(req, res) {
@@ -83,6 +109,16 @@ async function remove(req, res) {
 
     res.status(200).end();
 }
+
+
+async function clean() {
+
+}
+
+async function createItem(req, res) {
+
+}
+
 
 module.exports = {
     clean,

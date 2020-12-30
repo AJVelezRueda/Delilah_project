@@ -37,6 +37,14 @@ paths:
       summary: devuelve el status de un pedido
     put:
       summary: actualiza precios del producto 
+  /orders/{id}/items:
+    post:
+      summary: confirma un nuevo pedido
+    get:
+      summary: muestra la información de todos los items de un pedido
+      parameters:
+    delete:
+      summary: cancela un item asociado a un pedido 
   /productos:
     get:
       summary: lista los productos
