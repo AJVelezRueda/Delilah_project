@@ -46,7 +46,7 @@ describe('Orders', () => {
             assert.deepEqual(res.body, { orders: [] });
         });
 
-        it('should return a singleton list when there is an order recently created', async() => {
+        it('should return a all the orders created', async() => {
             const { user_id } = await orderABrownie();
 
             const res = await agent.get('/orders')
@@ -64,7 +64,7 @@ describe('Orders', () => {
     });
 
     describe('GET /orders/:id', () => {
-        it('should return a singleton list when there is an order recently created', async() => {
+        it('should return an order recently created', async() => {
             const { user_id, product_id } = await orderABrownie();
 
             const res = await agent.get('/orders/1')
@@ -81,8 +81,28 @@ describe('Orders', () => {
         });
     });
 
+    describe('PUT /orders/:id', () => {
+        it('should return an order recently created', async() => {
+            const { user_id, product_id } = await orderABrownie();
+
+            const res = await agent.get('/orders/1')
+            assert.equal(res.status, 200);
+
+
+            const newres = await agent.put('/orders/1').send({
+                user_id: user_id,
+                items: [{ product_id, cantidad: 3 }],
+                description: "sin sal",
+                address: "calle falsa 123",
+                payment_method: "cash"
+            });
+
+            assert.equal(newres.status, 200);
+        });
+    });
+
     describe('DELETE /orders/:id', () => {
-        it('should return a singleton list when there is an order recently deleted', async() => {
+        it('should return 200 status afeter deleting an order', async() => {
             await orderABrownie();
 
             const res = await agent.delete(`/orders/1`);

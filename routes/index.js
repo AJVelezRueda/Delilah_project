@@ -21,6 +21,7 @@ function routes(app) {
     app.post('/orders', orders.create);
     app.get('/orders/:id', orders.get);
     app.delete('/orders/:id', orders.remove);
+    app.put('/orders/:id', orders.update)
 }
 
 module.exports = routes;

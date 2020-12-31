@@ -23,3 +23,8 @@ TO DO
 - no tomar user id que pasa en el body, recordar tomar el de la sesión
 - Hacer favoritos
 - cambiar el script de sql para crear la tabla orders
+
+
+PREGUNTAS
+- Será mejor tener el /orders/{id}/status o alcanza con el put del orders
+- Mismo caso con   /orders/{id}/items creo que no hace falta

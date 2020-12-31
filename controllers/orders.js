@@ -122,7 +122,7 @@ async function get(req, res) {
 }
 
 async function update(req, res) {
-    const order = await findOrderById(req.params.id);
+    const order = await findOrderById(Number(req.params.id));
 
     order.id = req.params.id;
     order.status = req.body.status;
