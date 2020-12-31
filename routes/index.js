@@ -19,7 +19,8 @@ function routes(app) {
     app.delete('/products/:id', products.remove);
     app.get('/orders', orders.listAll);
     app.post('/orders', orders.create);
-    app.get('/orders/:id', orders.get)
+    app.get('/orders/:id', orders.get);
+    app.delete('/orders/:id', orders.remove);
 }
 
 module.exports = routes;

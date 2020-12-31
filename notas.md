@@ -22,6 +22,4 @@ CREATE TABLE users (
 TO DO
 - no tomar user id que pasa en el body, recordar tomar el de la sesión
 - Hacer favoritos
-- hacer la tabla intermedia de "items" que tenga las columnas "pedido_id", "products_id", "cantidad" (hacerlo con el sql test)
-- cambiar el create de pedidos para que acepte una lista de productos y su cantidad 
 - cambiar el script de sql para crear la tabla orders

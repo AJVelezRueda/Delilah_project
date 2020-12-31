@@ -68,6 +68,7 @@ describe('Orders', () => {
             const { user_id, product_id } = await orderABrownie();
 
             const res = await agent.get('/orders/1')
+            assert.equal(res.status, 200);
             assert.deepEqual(res.body, {
                 id: 1,
                 status: 'nuevo',
@@ -77,6 +78,18 @@ describe('Orders', () => {
                 address: "calle falsa 123",
                 payment_method: "cash"
             });
+        });
+    });
+
+    describe('DELETE /orders/:id', () => {
+        it('should return a singleton list when there is an order recently deleted', async() => {
+            await orderABrownie();
+
+            const res = await agent.delete(`/orders/1`);
+            assert.equal(res.status, 200);
+
+            const newres = await agent.get('/orders')
+            assert.equal(newres.status, 200);
         });
     });
 });

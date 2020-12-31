@@ -49,12 +49,18 @@ async function allItmesByOrder(order_id) {
 }
 
 async function deleteOrdersById(id) {
+    await db.query(`delete from items where order_id = :id`, {
+        replacements: { id: id },
+        type: QueryTypes.DELETE
+    });
+
     await db.query(`delete from orders where id = :id`, {
         replacements: { id: id },
         type: QueryTypes.DELETE
     });
-}
 
+
+}
 
 async function listAll(req, res) {
     const orders = await db.query("select * from orders", { type: QueryTypes.SELECT });
@@ -129,8 +135,7 @@ async function update(req, res) {
 }
 
 async function remove(req, res) {
-    await deleteOrdersById(Number(req.params.id));
-
+    await deleteOrdersById(Number(req.params.id))
     res.status(200).end();
 }
 
