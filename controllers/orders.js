@@ -4,9 +4,6 @@ const db = require("../database");
 async function clean() {
     await db.query("SET FOREIGN_KEY_CHECKS = 0;");
     await db.query("truncate orders", { type: QueryTypes.BULKDELETE });
-    await db.query("SET FOREIGN_KEY_CHECKS = 1;");
-
-    await db.query("SET FOREIGN_KEY_CHECKS = 0;");
     await db.query("truncate items", { type: QueryTypes.BULKDELETE });
     await db.query("SET FOREIGN_KEY_CHECKS = 1;");
 }
@@ -76,7 +73,7 @@ async function insertItems(order_id, items) {
         };
 
         await db.query(`
-        insert into items (product_id, cantidad, order_id) 
+        insert into items (product_id, cantidad, order_id)
                     values (:product_id, :cantidad, :order_id)
     `, {
             replacements: newItem,
@@ -98,7 +95,7 @@ async function create(req, res) {
 
     try {
         const result = await db.query(`
-        insert into orders (status, user_id, description, address, payment_method) 
+        insert into orders (status, user_id, description, address, payment_method)
                     values (:status, :user_id, :description, :address, :payment_method)
     `, {
             replacements: order,
