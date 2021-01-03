@@ -1,5 +1,8 @@
 const { QueryTypes } = require("sequelize");
 const db = require("../database");
+const bcrypt = require('bcrypt');
+// TODO: esto también podría ser una variable de entorno
+const salt = 10;
 
 async function clean() {
     await db.query("SET FOREIGN_KEY_CHECKS = 0;");
@@ -37,27 +40,28 @@ async function get(req, res) {
         .status(200);
 }
 
-// TODO: en otro controller login-controller tener un método que haga login
-// parte de ese código es común a este otro método (generar el token y devolverlo), pero además también
-// tiene que validar la pass
-//
-//  La genración del token es algo así:
-//  jwt.sign({user_id: ....}, "una pass del servidor");
-
 async function create(req, res) {
+    const hash = await bcrypt.hash(req.body.password, salt);
+
     const user = {
         name: req.body.name,
         email: req.body.email,
+        username: req.body.username,
+        password_hash: hash,
+        role: 'customer'
     };
 
-    // TODO: recibir pass, almacenarla como un hash y generar un token
-    // TODO: agregar una columna que sea `rol`
+    // TODO: generar un token
+    // TODO: agregar una columna que sea `rol`, `role`,
     const result = await db.query(`
         insert into users (name, email) values (:name, :email)
     `, {
         replacements: user,
         type: QueryTypes.INSERT
     });
+
+    // TODO: terminar esto
+    //const token = jwt.sign({user_id}, process.env.ACCESS_TOKEN_SECRET);
 
     res.json({ id: result[0] }).status(201);
 }

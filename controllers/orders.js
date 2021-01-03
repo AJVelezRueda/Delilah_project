@@ -86,7 +86,7 @@ async function insertItems(order_id, items) {
 async function create(req, res) {
     const order = {
         status: 'nuevo',
-        user_id: req.body.user_id,
+        user_id: req.user_id,
         description: req.body.description,
         address: req.body.address,
         payment_method: req.body.payment_method
@@ -123,7 +123,7 @@ async function update(req, res) {
 
     order.id = req.params.id;
     order.status = req.body.status;
-    order.user_id = req.body.user_id;
+    order.user_id = req.user_id;
     order.description = req.body.description;
     order.address = req.body.address;
     order.payment_method = req.body.payment_method

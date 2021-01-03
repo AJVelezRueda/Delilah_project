@@ -1,7 +1,7 @@
 const user = require('../controllers/user');
 const products = require('../controllers/products');
 const orders = require('../controllers/orders');
-
+const session = require('../controllers/session');
 
 
 function routes(app) {
@@ -21,7 +21,9 @@ function routes(app) {
     app.post('/orders', orders.create);
     app.get('/orders/:id', orders.get);
     app.delete('/orders/:id', orders.remove);
-    app.put('/orders/:id', orders.update)
+    app.put('/orders/:id', orders.update);
+
+    app.post('/login', session.login);
 }
 
 module.exports = routes;
