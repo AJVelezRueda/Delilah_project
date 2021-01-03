@@ -8,6 +8,9 @@ const app = express();
 //    max: 5
 //});
 
+if (!process.env.ACCESS_TOKEN_SECRET) {
+    throw new Error("Please set ACCESS_TOKEN_SECRET before running app");
+}
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Api escuchando el puerto: 3000`);

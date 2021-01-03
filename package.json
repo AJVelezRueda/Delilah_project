@@ -5,7 +5,8 @@
     "main": "app.js",
     "scripts": {
         "start": "node ./app.js",
-        "test": "mocha --timeout 2000"
+        "dev": "ACCESS_TOKEN_SECRET=my_super_awesome_dev_decret node ./app.js",
+        "test": "ACCESS_TOKEN_SECRET=my_super_awesome_test_secret mocha --timeout 2000"
     },
     "repository": {
         "type": "git",
@@ -20,6 +21,8 @@
     "dependencies": {
         "express": "4.17.1",
         "express-rate-limit": "^5.2.3",
+        "helmet": "^4.3.1",
+        "jsonwebtoken": "^8.5.1",
         "mysql2": "^2.2.5",
         "sequelize": "6.3.5"
     },
