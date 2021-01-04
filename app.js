@@ -12,9 +12,9 @@ if (!process.env.ACCESS_TOKEN_SECRET) {
     throw new Error("Please set ACCESS_TOKEN_SECRET before running app");
 }
 
-app.use(helmet());
-app.use(rateLimit({windowMs: 60 * 60 * 1000, max: 5}));
-app.use(authentication);
+//app.use(helmet());
+//app.use(rateLimit({ windowMs: 60 * 60 * 1000, max: 5 }));
+//app.use(authentication);
 app.use(express.json());
 
 routes(app);

@@ -41,29 +41,29 @@ async function get(req, res) {
 }
 
 async function create(req, res) {
-    const hash = await bcrypt.hash(req.body.password, salt);
+    try {
+        const hash = await bcrypt.hash(req.body.password, salt);
 
-    const user = {
-        name: req.body.name,
-        email: req.body.email,
-        username: req.body.username,
-        password_hash: hash,
-        role: 'customer'
-    };
-
-    // TODO: generar un token
-    // TODO: agregar una columna que sea `rol`, `role`,
-    const result = await db.query(`
-        insert into users (name, email) values (:name, :email)
+        const user = {
+            name: req.body.name,
+            email: req.body.email,
+            username: req.body.username,
+            password_hash: hash,
+            role: 'customer'
+        };
+        const result = await db.query(`
+        insert into users (name, email, username, password_hash, role) values (:name, :email, :username, :password_hash, :role)
     `, {
-        replacements: user,
-        type: QueryTypes.INSERT
-    });
+            replacements: user,
+            type: QueryTypes.INSERT
+        });
 
-    // TODO: terminar esto
-    //const token = jwt.sign({user_id}, process.env.ACCESS_TOKEN_SECRET);
+        const token = jwt.sign({ user_id }, process.env.ACCESS_TOKEN_SECRET);
 
-    res.json({ id: result[0] }).status(201);
+        res.json({ token }).status(201);
+    } catch (e) {
+        res.json({ message: e.message }).status(500);
+    }
 }
 
 async function update(req, res) {
@@ -74,7 +74,7 @@ async function update(req, res) {
     const user = {
         id,
         name: req.body.name,
-        email: req.body.email
+        email: req.body.email,
     }
 
     await db.query(`
