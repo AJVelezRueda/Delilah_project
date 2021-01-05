@@ -118,6 +118,9 @@ async function get(req, res) {
         .status(200);
 }
 
+
+//Falta hacer el Update en la base de datos
+//No pisar un objeto, es mala práctica 
 async function update(req, res) {
     const order = await findOrderById(Number(req.params.id));
 
