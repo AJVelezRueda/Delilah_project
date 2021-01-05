@@ -22,21 +22,32 @@ describe('Orders', () => {
 
 
     async function orderABrownie() {
-        const { body: bodyUser } = await agent.post('/users').send({ name: "Pendorcho Flores", email: "elFlores@gmail.com" });
+        const { body: bodyUser } = await agent.post('/users').send({
+            name: "Pendorcho Flores",
+            email: "elFlores@gmail.com",
+            username: "flowersp",
+            password: "margaritas"
+        });
         const user_id = bodyUser.id;
+        const token = bodyUser.token;
 
-        const { body: bodyProducts } = await agent.post('/products').send({ name: "Brownie relleno", price: "150.00" });
+        const { body: bodyProducts } = await agent
+            .post('/products')
+            .set("Authorization", `Bearer ${token}`)
+            .send({ name: "Brownie relleno", price: "150.00" });
         const product_id = bodyProducts.id;
 
-        await agent.post('/orders').send({
-            user_id: user_id,
-            items: [{ product_id, cantidad: 3 }],
-            description: "veggie",
-            address: "calle falsa 123",
-            payment_method: "cash"
-        });
-
-        return { user_id, product_id };
+        const result = await agent
+            .post('/orders')
+            .set("Authorization", `Bearer ${token}`)
+            .send({
+                items: [{ product_id, cantidad: 3 }],
+                description: "veggie",
+                address: "calle falsa 123",
+                payment_method: "cash"
+            });
+        assert.deepEqual(result.status, 200);
+        return { token, user_id, product_id };
     }
 
     describe('GET /orders', () => {
@@ -103,12 +114,14 @@ describe('Orders', () => {
 
     describe('DELETE /orders/:id', () => {
         it('should return 200 status afeter deleting an order', async() => {
-            await orderABrownie();
+            const { token } = await orderABrownie();
 
-            const res = await agent.delete(`/orders/1`);
+            const res = await agent.delete(`/orders/1`).set("Authorization", `Bearer ${token}`);
             assert.equal(res.status, 200);
 
-            const newres = await agent.get('/orders')
+            const newres = await agent
+                .get('/orders')
+                .set("Authorization", `Bearer ${token}`);
             assert.equal(newres.status, 200);
         });
     });

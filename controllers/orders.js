@@ -117,20 +117,34 @@ async function get(req, res) {
         .status(200);
 }
 
-
-//Falta hacer el Update en la base de datos
-//No pisar un objeto, es mala práctica 
 async function update(req, res) {
-    const order = await findOrderById(Number(req.params.id));
+    try {
+        const order = await findOrderById(Number(req.params.id));
 
-    order.id = req.params.id;
-    order.status = req.body.status;
-    order.user_id = req.user_id;
-    order.description = req.body.description;
-    order.address = req.body.address;
-    order.payment_method = req.body.payment_method
+        order.status = req.body.status;
+        order.description = req.body.description;
+        order.address = req.body.address;
+        order.payment_method = req.body.payment_method
 
-    res.json(order).status(201);
+        await db.query(`
+            update orders set status = :status, 
+            description = :description, 
+            address = :address, 
+            payment_method = :payment_method 
+            where id = :id
+        `, {
+            replacements: order,
+            type: QueryTypes.UPDATE
+        });
+
+        res.status(200).end();
+    } catch (e) {
+        if (e.message == 'No existe la orden') {
+            res.status(404).end();
+        } else {
+            res.status(500).end();
+        }
+    }
 }
 
 async function remove(req, res) {

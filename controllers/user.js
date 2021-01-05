@@ -1,6 +1,7 @@
 const { QueryTypes } = require("sequelize");
 const db = require("../database");
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 // TODO: esto también podría ser una variable de entorno
 const salt = 10;
 
@@ -11,7 +12,7 @@ async function clean() {
 }
 
 async function findUserById(id) {
-    const users = await db.query(`select * from users where id = :id`, {
+    const users = await db.query(`select id, name, username, email from users where id = :id`, {
         replacements: { id: id },
         type: QueryTypes.SELECT
     });
@@ -31,13 +32,14 @@ async function deleteUserById(id) {
 }
 
 async function listAll(req, res) {
-    const users = await db.query("select * from users", { type: QueryTypes.SELECT });
+    const users = await db.query("select id, name, username, email from users", { type: QueryTypes.SELECT });
     res.json({ users }).status(200);
 }
 
 async function get(req, res) {
-    res.json(await findUserById(Number(req.params.id)))
-        .status(200);
+    const { password_hash, ...user } = await findUserById(Number(req.params.id))
+
+    res.json(user).status(200);
 }
 
 async function create(req, res) {
@@ -57,10 +59,10 @@ async function create(req, res) {
             replacements: user,
             type: QueryTypes.INSERT
         });
-
+        const user_id = result[0];
         const token = jwt.sign({ user_id }, process.env.ACCESS_TOKEN_SECRET);
 
-        res.json({ token }).status(201);
+        res.json({ id: user_id, token }).status(201);
     } catch (e) {
         res.json({ message: e.message }).status(500);
     }

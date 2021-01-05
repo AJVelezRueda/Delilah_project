@@ -29,6 +29,7 @@ TO DO
 - soportar dos roles: admin y customer
 - separar la parte que accede a la base de datos (ponerlo en la carpeta Database) de las funciones que manejan https
 - generar solo un script de sql que te genere todas las tablas
+- en orders update, falta hacer el Update en la base de datos
 
 Caso de uso signup:
     - POST /user

@@ -82,7 +82,7 @@ async function update(req, res) {
 
         res.status(200).end();
     } catch (e) {
-        if (e.message == 'No existe el usuario') {
+        if (e.message == 'No existe el producto') {
             res.status(404).end();
         } else {
             res.status(500).end();
