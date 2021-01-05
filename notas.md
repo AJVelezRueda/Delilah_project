@@ -27,10 +27,8 @@ TO DO
     - helemet; probablemente no tenga ningún impacto visible en nuestra aplicación
     - rateLimit
 - soportar dos roles: admin y customer
-- separar la parte que accede a la base de datos, de las funciones que manejan https
-- el token va en header berer
+- separar la parte que accede a la base de datos (ponerlo en la carpeta Database) de las funciones que manejan https
 - generar solo un script de sql que te genere todas las tablas
-- en orders, no hace falta tener el /status, que se haga solo el put en orders y ya 
 
 Caso de uso signup:
     - POST /user

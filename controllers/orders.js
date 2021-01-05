@@ -82,7 +82,6 @@ async function insertItems(order_id, items) {
     }
 }
 
-
 async function create(req, res) {
     const order = {
         status: 'nuevo',

@@ -12,11 +12,13 @@ function routes(app) {
     app.delete('/users/:id', user.remove);
     app.post('/users/:id/favoritos', user.createFavorite);
     app.delete('/users/:id/favoritos', user.removeFavorites);
+
     app.get('/products', products.listAll);
     app.get('/products/:id', products.get);
     app.put('/products/:id', products.update);
     app.post('/products', products.create);
     app.delete('/products/:id', products.remove);
+
     app.get('/orders', orders.listAll);
     app.post('/orders', orders.create);
     app.get('/orders/:id', orders.get);
