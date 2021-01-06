@@ -2,7 +2,6 @@ const { QueryTypes } = require("sequelize");
 const db = require("../database");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-// TODO: esto también podría ser una variable de entorno
 const salt = 10;
 
 async function clean() {
