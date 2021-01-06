@@ -1,11 +1,35 @@
-console.log("lala")
+let token = null;
+let user_id = null;
 
-function signup(agent, user) {
-    const { body: bodyUser } = await agent.post('/users').send(user);
-    user_id = bodyUser.id;
-    token = bodyUser.token;
+async function signup(agent, user = sampleUser()) {
+    const { body } = await agent.post('/users').send(user);
+    user_id = body.id;
+    token = body.token;
 }
 
-function apiCall(operation) {
+function withToken(operation) {
+    if (!token) throw new Error("Please signup first");
+
     return operation.set("Authorization", `Bearer ${token}`)
 }
+
+function sampleUser() {
+    return {
+        name: "Pendorcho Flores",
+        email: "elFlores@gmail.com",
+        username: "flowersp",
+        password: "margaritas"
+    };
+}
+
+function getToken() { return token }
+
+function getUserId() { return user_id }
+
+module.exports = {
+    signup,
+    sampleUser,
+    withToken,
+    getToken,
+    getUserId
+};

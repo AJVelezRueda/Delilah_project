@@ -62,9 +62,9 @@ async function create(req, res) {
         const user_id = result[0];
         const token = jwt.sign({ user_id }, process.env.ACCESS_TOKEN_SECRET);
 
-        res.json({ id: user_id, token }).status(201);
+        res.status(201).json({ id: user_id, token });
     } catch (e) {
-        res.json({ message: e.message }).status(500);
+        res.status(500).json({ message: e.message });
     }
 }
 
@@ -103,7 +103,7 @@ function createFavorite(req, res) {
 
     favorites.push(favorite);
 
-    res.json(favorite).status(201);
+    res.status(201).json(favorite);
 }
 
 function deleteUserFavorite(id) {
@@ -114,7 +114,7 @@ function deleteUserFavorite(id) {
 function removeFavorites(req, res) {
     deleteUserFavorite(req.body.id);
 
-    res.json(favorite).status(201);
+    res.status(201).json(favorite);
 }
 
 module.exports = {

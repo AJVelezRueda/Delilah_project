@@ -37,7 +37,7 @@ async function get(req, res) {
         res.json(await findProductById(Number(req.params.id)))
             .status(200);
     } catch (e) {
-        res.json({ message: e.message }).status(500);
+        res.status(500).json({ message: e.message });
     };
 }
 
@@ -55,9 +55,9 @@ async function create(req, res) {
             type: QueryTypes.INSERT
         });
 
-        res.json({ id: result[0] }).status(201);
+        res.status(201).json({ id: result[0] });
     } catch (e) {
-        res.json({ message: e.message }).status(500);
+        res.status(500).json({ message: e.message });
     }
 }
 
@@ -85,7 +85,7 @@ async function update(req, res) {
         if (e.message == 'No existe el producto') {
             res.status(404).end();
         } else {
-            res.status(500).end();
+            res.status(500).json({ message: e.message });
         }
     }
 

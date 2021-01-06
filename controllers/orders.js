@@ -84,7 +84,7 @@ async function insertItems(order_id, items) {
 
 async function create(req, res) {
     const order = {
-        status: 'nuevo',
+        status: 'new',
         user_id: req.user_id,
         description: req.body.description,
         address: req.body.address,
@@ -105,10 +105,10 @@ async function create(req, res) {
 
         insertItems(order_id, items);
 
-        res.json({ id: result[0] }).status(201);
+        res.status(201).json({ id: result[0] });
 
     } catch (e) {
-        res.json({ message: e.message }).status(500);
+        res.status(500).json({ message: e.message });
     }
 }
 
@@ -142,7 +142,7 @@ async function update(req, res) {
         if (e.message == 'No existe la orden') {
             res.status(404).end();
         } else {
-            res.status(500).end();
+            res.status(500).json({ message: e.message });
         }
     }
 }
