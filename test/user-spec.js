@@ -22,6 +22,7 @@ describe('Users', () => {
                 username: "juancitomastro",
                 password: "sevaacaer"
             });
+
             const res = await withToken(agent.get('/users'))
             assert.equal(res.status, 200);
             assert.deepEqual(res.body, {
