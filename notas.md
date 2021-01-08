@@ -18,19 +18,6 @@ CREATE TABLE users (
 - Los tests se corren parados en la carpeta haciendo:
     npm run test
 
-
-TO DO
-- no tomar user id que pasa en el body, recordar tomar el de la sesión
-- Hacer favoritos
-- cambiar el script de sql para crear la tabla orders
-- agregar
-    - helemet; probablemente no tenga ningún impacto visible en nuestra aplicación
-    - rateLimit
-- soportar dos roles: admin y customer
-- separar la parte que accede a la base de datos (ponerlo en la carpeta Database) de las funciones que manejan https
-- generar solo un script de sql que te genere todas las tablas
-- en orders update, falta hacer el Update en la base de datos
-
 Caso de uso signup:
     - POST /user
         -> internamente crea un usuario en la base de datos, persiste su hash de contraseña para despues poder validarla [y crea un token JWT conformado por su user_id]
@@ -41,3 +28,17 @@ Caso de uso signup:
         -> [crea un token JWT conformado por el user_id; por las propiedad de JWT y el hecho de que estamos incluyendo sólamente un valor estable (el user_id), este token será identico al anterior]
         -> el cliente se guarda el token al igual que en el paso anterior
     -> {POST /logout (DELETE /session); ojo que bajo este esquema no es necesario realente hacer una operacion a nivel servidor, basta con borrar el local storage en el cliente}
+
+TO DO
+-----
+- no tomar user id que pasa en el body, recordar tomar el de la sesión
+- Hacer favoritos
+- cambiar el script de sql para crear la tabla orders
+- agregar
+    - rateLimit
+- soportar dos roles: admin y customer
+    - habría que hacer que en las rutas que no tiene middleware de admin que para acceder a los datos solo deje acceder a los propios
+- separar la parte que accede a la base de datos (ponerlo en la carpeta Database) de las funciones que manejan https
+- generar solo un script de sql que te genere todas las tablas
+- en orders update, falta hacer el Update en la base de datos
+

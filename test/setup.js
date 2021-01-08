@@ -1,10 +1,18 @@
+const { insert: insertUser } = require("../controllers/user");
 let token = null;
 let user_id = null;
 
 async function signup(agent, user = sampleUser()) {
-    const { body } = await agent.post('/users').send(user);
-    user_id = body.id;
-    token = body.token;
+
+    if (user.role === "admin") {
+        let result = await insertUser(user);
+        user_id = result.user_id;
+        token = result.token;
+    } else {
+        let { body } = (await agent.post('/users').send(user));
+        user_id = body.id;
+        token = body.token;
+    }
 }
 
 function withToken(operation) {
@@ -18,7 +26,8 @@ function sampleUser() {
         name: "Pendorcho Flores",
         email: "elFlores@gmail.com",
         username: "flowersp",
-        password: "margaritas"
+        password: "margaritas",
+        role: "admin"
     };
 }
 

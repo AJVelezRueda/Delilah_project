@@ -10,6 +10,19 @@ async function clean() {
     await db.query("SET FOREIGN_KEY_CHECKS = 1;");
 }
 
+async function insert(user) {
+    user.password_hash = await bcrypt.hash(user.password, salt);
+    const result = await db.query(`
+    insert into users (name, email, username, password_hash, role) values (:name, :email, :username, :password_hash, :role)
+`, {
+        replacements: user,
+        type: QueryTypes.INSERT
+    });
+    const user_id = result[0];
+    const token = jwt.sign({ user_id }, process.env.ACCESS_TOKEN_SECRET);
+    return { user_id, token };
+}
+
 async function findUserById(id) {
     const users = await db.query(`select id, name, username, email from users where id = :id`, {
         replacements: { id: id },
@@ -43,24 +56,14 @@ async function get(req, res) {
 
 async function create(req, res) {
     try {
-        const hash = await bcrypt.hash(req.body.password, salt);
-
         const user = {
             name: req.body.name,
             email: req.body.email,
             username: req.body.username,
-            password_hash: hash,
+            password: req.body.password,
             role: 'customer'
         };
-        const result = await db.query(`
-        insert into users (name, email, username, password_hash, role) values (:name, :email, :username, :password_hash, :role)
-    `, {
-            replacements: user,
-            type: QueryTypes.INSERT
-        });
-        const user_id = result[0];
-        const token = jwt.sign({ user_id }, process.env.ACCESS_TOKEN_SECRET);
-
+        const { user_id, token } = await insert(user);
         res.status(201).json({ id: user_id, token });
     } catch (e) {
         res.status(500).json({ message: e.message });
@@ -124,5 +127,6 @@ module.exports = {
     update,
     remove,
     createFavorite,
-    removeFavorites
+    removeFavorites,
+    insert
 };

@@ -2,7 +2,7 @@ const express = require("express");
 
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
-const authentication = require("./routes/authentication.js");
+const { authenticateToken } = require("./routes/authentication.js");
 
 const routes = require("./routes/index.js");
 
@@ -14,7 +14,7 @@ if (!process.env.ACCESS_TOKEN_SECRET) {
 
 app.use(helmet());
 //app.use(rateLimit({ windowMs: 60 * 60 * 1000, max: 5 }));
-app.use(authentication);
+app.use(authenticateToken);
 app.use(express.json());
 
 routes(app);
