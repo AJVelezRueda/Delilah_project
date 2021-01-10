@@ -19,11 +19,11 @@ function authenticateToken(req, res, next) {
 }
 
 function filterAdmin(req, res, next) {
-    // if (req.role === 'admin') {
-    next();
-    // } else {
-    //     res.status(403).end();
-    // }
+    if (req.role === 'admin') {
+        next();
+    } else {
+        res.status(403).end();
+    }
 }
 
 async function findUserRole(id) {
