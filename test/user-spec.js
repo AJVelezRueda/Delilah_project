@@ -20,7 +20,8 @@ describe('Users', () => {
                 name: "Johan Sebastian",
                 email: "mastro@gmail.com",
                 username: "juancitomastro",
-                password: "sevaacaer"
+                password: "sevaacaer",
+                role: "admin"
             });
 
             const res = await withToken(agent.get('/users'))
@@ -101,7 +102,8 @@ describe('Users', () => {
                 name: "Robert Machi",
                 email: "patriarcado@gmail.com",
                 username: "onvre",
-                password: "lapetisa"
+                password: "lapetisa",
+                role: "admin"
             });
 
             const res = await withToken(agent.delete(`/users/${getUserId()}`))
