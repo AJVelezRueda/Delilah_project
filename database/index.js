@@ -11,6 +11,7 @@ async function getResorceById(table, id) {
         replacements: { id: id },
         type: QueryTypes.SELECT
     });
+
     return resorce;
 };
 
