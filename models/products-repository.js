@@ -1,9 +1,5 @@
 const { QueryTypes } = require("sequelize");
-const { db, cleanTable, deleteResoueceById } = require("../database");
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const salt = 10;
-
+const { db } = require("../database");
 
 async function insertProducts(products) {
     const result = await db.query(`

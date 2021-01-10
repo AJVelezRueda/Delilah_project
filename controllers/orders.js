@@ -1,11 +1,9 @@
 const { QueryTypes } = require("sequelize");
 const { db, getResourceById, deleteResoueceById, getAllResources } = require("../database");
+const { cleanTables } = require("../models/orders-repository")
 
 async function clean() {
-    await db.query("SET FOREIGN_KEY_CHECKS = 0;");
-    await db.query("truncate orders", { type: QueryTypes.BULKDELETE });
-    await db.query("truncate items", { type: QueryTypes.BULKDELETE });
-    await db.query("SET FOREIGN_KEY_CHECKS = 1;");
+    await cleanTables('orders', 'items');
 }
 
 
