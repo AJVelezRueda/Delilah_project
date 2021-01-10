@@ -31,13 +31,8 @@ Caso de uso signup:
 
 TO DO
 -----
-- no tomar user id que pasa en el body, recordar tomar el de la sesión
-- Hacer favoritos
-- cambiar el script de sql para crear la tabla orders
 - agregar
     - rateLimit
-- soportar dos roles: admin y customer
-    - habría que hacer que en las rutas que no tiene middleware de admin que para acceder a los datos solo deje acceder a los propios
 - separar la parte que accede a la base de datos (ponerlo en la carpeta Database) de las funciones que manejan https
 - generar solo un script de sql que te genere todas las tablas
 - en orders update, falta hacer el Update en la base de datos
