@@ -1,4 +1,4 @@
-CREATE USER 'delilah'@'localhost' IDENTIFIED BY 'D3L1L4HIS@W3S0m3!i5N\'T1t?';
+/--CREATE USER 'delilah'@'localhost' IDENTIFIED BY 'D3L1L4HIS@W3S0m3!i5N\'T1t?';
 CREATE SCHEMA @user_var1 ;
 USE @user_var1;
 GRANT ALL PRIVILEGES ON @user_var1.* TO 'delilah'@'localhost' WITH GRANT OPTION;

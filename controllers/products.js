@@ -1,5 +1,5 @@
 const { QueryTypes } = require("sequelize");
-const db = require("../database");
+const { db } = require("../database");
 
 async function clean() {
     await db.query("SET FOREIGN_KEY_CHECKS = 0;");
