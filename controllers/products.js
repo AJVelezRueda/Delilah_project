@@ -1,5 +1,5 @@
 const { QueryTypes } = require("sequelize");
-const { db } = require("../database");
+const { db, getResourceById, getAllResources, deleteResoueceById } = require("../database");
 
 async function clean() {
     await db.query("SET FOREIGN_KEY_CHECKS = 0;");
@@ -8,27 +8,15 @@ async function clean() {
 }
 
 async function findProductById(id) {
-    const products = await db.query(`select * from products where id = :id`, {
-        replacements: { id: id },
-        type: QueryTypes.SELECT
-    });
-
-    if (products.length === 0) {
-        throw new Error('No existe el usuario');
-    }
-
-    return products[0];
+    return await getResourceById('products', id);
 }
 
 async function deleteProductById(id) {
-    await db.query(`delete from products where id = :id`, {
-        replacements: { id: id },
-        type: QueryTypes.DELETE
-    });
+    await deleteResoueceById('products', id);
 }
 
 async function listAll(req, res) {
-    const products = await db.query("select * from products", { type: QueryTypes.SELECT });
+    const products = await getAllResources('products');
     res.json({ products }).status(200);
 }
 

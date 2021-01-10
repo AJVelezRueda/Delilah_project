@@ -62,7 +62,7 @@ describe('Products', () => {
             const { body } = await withToken(agent.post('/products')).send({ name: "Hamburguesa completa", price: "450.00" })
             const productId = body.id;
             const res = await withToken(agent.put(`/products/${productId}`)).send({ name: "Hamburguesa completa", price: "350.00" })
-            assert.equal(res.status, 200);
+            assert.deepEqual(res.status, 200);
 
             const newres = await withToken(agent.get(`/products/${productId}`))
 
