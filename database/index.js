@@ -30,9 +30,16 @@ async function deleteResoueceById(table, id) {
     });
 }
 
+async function cleanTable(table) {
+    await db.query("SET FOREIGN_KEY_CHECKS = 0;");
+    await db.query(`truncate ${table}`, { type: QueryTypes.BULKDELETE });
+    await db.query("SET FOREIGN_KEY_CHECKS = 1;");
+}
+
 module.exports = {
     db,
     getResourceById,
     getAllResources,
-    deleteResoueceById
+    deleteResoueceById,
+    cleanTable
 };

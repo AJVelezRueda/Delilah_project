@@ -1,5 +1,5 @@
 const { QueryTypes } = require("sequelize");
-const { db } = require("../database");
+const { db, getResourceById, deleteResoueceById, getAllResources } = require("../database");
 
 async function clean() {
     await db.query("SET FOREIGN_KEY_CHECKS = 0;");
@@ -10,16 +10,7 @@ async function clean() {
 
 
 async function findOrderById(id) {
-    const orders = await db.query(`select * from orders where id = :id`, {
-        replacements: { id: id },
-        type: QueryTypes.SELECT
-    });
-
-    if (orders.length === 0) {
-        throw new Error('The order does not exist');
-    }
-
-    const order = orders[0];
+    const order = await getResourceById('orders', id);
     order.items = await allItmesByOrder(id);
 
     return order;
@@ -51,16 +42,12 @@ async function deleteOrdersById(id) {
         type: QueryTypes.DELETE
     });
 
-    await db.query(`delete from orders where id = :id`, {
-        replacements: { id: id },
-        type: QueryTypes.DELETE
-    });
-
+    await deleteResoueceById('orders', id);
 
 }
 
 async function listAll(req, res) {
-    const orders = await db.query("select * from orders", { type: QueryTypes.SELECT });
+    const orders = await getAllResources('orders');
     res.json({ orders }).status(200);
 }
 

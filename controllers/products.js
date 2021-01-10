@@ -1,11 +1,9 @@
 const { QueryTypes } = require("sequelize");
-const { db, getResourceById, getAllResources, deleteResoueceById } = require("../database");
+const { db, getResourceById, getAllResources, deleteResoueceById, cleanTable } = require("../database");
 
 async function clean() {
-    await db.query("SET FOREIGN_KEY_CHECKS = 0;");
-    await db.query("truncate products", { type: QueryTypes.BULKDELETE });
-    await db.query("SET FOREIGN_KEY_CHECKS = 1;");
-}
+    cleanTable('products');
+};
 
 async function findProductById(id) {
     return await getResourceById('products', id);
