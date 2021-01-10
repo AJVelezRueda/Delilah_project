@@ -1,5 +1,6 @@
 const { QueryTypes } = require("sequelize");
 const { db, getResourceById, getAllResources, deleteResoueceById, cleanTable } = require("../database");
+const { insertProducts, updateAProduct } = require("../models/products-repository")
 
 async function clean() {
     cleanTable('products');
@@ -34,14 +35,8 @@ async function create(req, res) {
     };
 
     try {
-        const result = await db.query(`
-            insert into products (name, price) values (:name, :price)
-        `, {
-            replacements: products,
-            type: QueryTypes.INSERT
-        });
 
-        res.status(201).json({ id: result[0] });
+        res.status(201).json({ id: await insertProducts(products) });
     } catch (e) {
         res.status(500).json({ message: e.message });
     }
@@ -59,12 +54,7 @@ async function update(req, res) {
             price: req.body.price
         }
 
-        await db.query(`
-            update products set name = :name, price = :price where id = :id
-        `, {
-            replacements: product,
-            type: QueryTypes.UPDATE
-        });
+        await updateAProduct(product);
 
         res.status(200).end();
     } catch (e) {
