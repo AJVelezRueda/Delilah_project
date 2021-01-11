@@ -66,13 +66,18 @@ paths:
       - application/json
     post:
       summary: agrega un nuevo usuario
-    responses:
-      '200':
-        description: successful operation
-      '404':
-        description: Not Found
-      '500':
-        description: Internal server error
+      parameters:
+        - in: body
+          name: body
+          description: Update an user
+          required: true
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: Not Found
+        '500':
+          description: Internal server error
   /usuarios/{id}:
     get:
       summary: expone los datos de un usuario
@@ -88,13 +93,13 @@ paths:
             name: body
             description: Update an user
             required: true
-    responses:
-      '200':
-        description: successful operation
-      '404':
-        description: Not Found
-      '500':
-        description: Internal server error
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: Not Found
+        '500':
+          description: Internal server error
 externalDocs:
   description: Find out more about Swagger
   url: 'http://swagger.io'

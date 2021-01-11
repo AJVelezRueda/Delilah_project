@@ -1,6 +1,6 @@
 **Delilah Project**
 
-Backend Project 
+REST API Project 
 
 **Implementation**
 + Node.js
