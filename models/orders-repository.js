@@ -63,10 +63,24 @@ async function insertOrder(order) {
     return result[0];
 }
 
+async function orderUpdate(order) {
+    await db.query(`
+    update orders set status = :status, 
+    description = :description, 
+    address = :address, 
+    payment_method = :payment_method 
+    where id = :id
+`, {
+        replacements: order,
+        type: QueryTypes.UPDATE
+    });
+}
+
 module.exports = {
     cleanTables,
     allItmesByOrder,
     deleteOrderItems,
     insertNewItem,
-    insertOrder
+    insertOrder,
+    orderUpdate
 }

@@ -1,6 +1,6 @@
 const { QueryTypes } = require("sequelize");
 const { db, getResourceById, deleteResoueceById, getAllResources } = require("../database");
-const { cleanTables, allItmesByOrder, deleteOrderItems, insertNewItem, insertOrder } = require("../models/orders-repository")
+const { cleanTables, allItmesByOrder, deleteOrderItems, insertNewItem, insertOrder, orderUpdate } = require("../models/orders-repository")
 
 async function clean() {
     await cleanTables('orders', 'items');
@@ -73,16 +73,7 @@ async function update(req, res) {
         order.address = req.body.address;
         order.payment_method = req.body.payment_method
 
-        await db.query(`
-            update orders set status = :status, 
-            description = :description, 
-            address = :address, 
-            payment_method = :payment_method 
-            where id = :id
-        `, {
-            replacements: order,
-            type: QueryTypes.UPDATE
-        });
+        await orderUpdate(order);
 
         res.status(200).end();
     } catch (e) {
