@@ -1,6 +1,6 @@
 const { QueryTypes } = require("sequelize");
 const { db, getResourceById, deleteResoueceById, getAllResources } = require("../database");
-const { cleanTables } = require("../models/orders-repository")
+const { cleanTables, allItmesByOrder, deleteOrderItems, insertNewItem, insertOrder } = require("../models/orders-repository")
 
 async function clean() {
     await cleanTables('orders', 'items');
@@ -14,32 +14,8 @@ async function findOrderById(id) {
     return order;
 }
 
-async function allItmesByOrder(order_id) {
-    const items = await db.query(`SELECT
-    items.cantidad,
-    products.name,
-    products.id
-    FROM items
-    INNER JOIN products ON products.id = items.product_id
-    WHERE items.order_id = :order_id
-    `, {
-        replacements: { order_id },
-        type: QueryTypes.SELECT
-    });
-
-    if (items.length === 0) {
-        throw new Error('The order does not exist');
-    }
-
-    return items;
-}
-
 async function deleteOrdersById(id) {
-    await db.query(`delete from items where order_id = :id`, {
-        replacements: { id: id },
-        type: QueryTypes.DELETE
-    });
-
+    await deleteOrderItems(id);
     await deleteResoueceById('orders', id);
 
 }
@@ -57,13 +33,7 @@ async function insertItems(order_id, items) {
             order_id
         };
 
-        await db.query(`
-        insert into items (product_id, cantidad, order_id)
-                    values (:product_id, :cantidad, :order_id)
-    `, {
-            replacements: newItem,
-            type: QueryTypes.INSERT
-        });
+        await insertNewItem(newItem);
     }
 }
 
@@ -78,19 +48,11 @@ async function create(req, res) {
     const items = req.body.items;
 
     try {
-        const result = await db.query(`
-        insert into orders (status, user_id, description, address, payment_method)
-                    values (:status, :user_id, :description, :address, :payment_method)
-    `, {
-            replacements: order,
-            type: QueryTypes.INSERT
-        });
-
-        const order_id = result[0];
+        const order_id = await insertOrder(order);
 
         insertItems(order_id, items);
 
-        res.status(201).json({ id: result[0] });
+        res.status(201).json({ id: order_id });
 
     } catch (e) {
         res.status(500).json({ message: e.message });
