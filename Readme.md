@@ -1,10 +1,29 @@
-Requirements for deploying Delilah project:
+**Delilah Project**
+
+Backend Project 
+
+**Implementation**
++ Node.js
+    * Nodemon Library
+    * Express Library
+    * Sequelize Library
++  Json Web Token (JWT)
++  MySQL
+
+**Deployment**
++ Requirements for deploying Delilah project:
     - Node
-    - MySql 
-    - Clone locally the project
-Delilah project can be deployed by:
-- Runing in mysql workbrench the db_create.sql
-- Run the following command for installing all dependences(must be inside /delilah_project):
-    npm install
-- Run the server by using the following command in the shell (must be inside /delilah_project):
-    npm run app.js
+    - MySql
+
++ Clone locally the using the following command in bash shell:
+    ```git clone https://github.com/AJVelezRueda/delilah_project.git```
+    ```cd delilah_project```
+
+
++ Installing all dependences:
+    ```npm install```
+
++ Run the server by using the following command in the shell (must be inside /delilah_project):
+   ```npm run app.js```
+
++ Run in mysql workbrench the db_create.sql before using the app

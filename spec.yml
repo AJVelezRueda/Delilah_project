@@ -23,6 +23,11 @@ paths:
     get:
       summary: lista los pedidos
       parameters:
+        - in: path
+          type: integer
+          name: id
+          description: order Id
+          required: true
     post:
       summary: confirma un nuevo pedido
   /orders/{id}:
@@ -30,6 +35,12 @@ paths:
       summary: actualiza el estado de un pedido
     get:
       summary: muestra información de un pedido
+      parameters:
+        - in: path
+          type: integer
+          name: id
+          description: order Id
+          required: true
     delete:
       summary: cancela una orden 
   /productos:
@@ -40,22 +51,50 @@ paths:
   /productos/{id}:
     delete:
       summary: quita un producto de la venta
-    patch:
+    put:
       summary: actualiza precios del producto 
+      parameters:
+        - in: path
+          type: integer
+          name: id
+          description: product Id
+          required: true
   /usuarios:
     get:
       summary: lista los usuarios
       produces:
       - application/json
     post:
-      summary: agrega un nuevo usuario 
+      summary: agrega un nuevo usuario
+    responses:
+      '200':
+        description: successful operation
+      '404':
+        description: Not Found
+      '500':
+        description: Internal server error
   /usuarios/{id}:
     get:
       summary: expone los datos de un usuario
-    patch:
+    put:
       summary: actualiza los datos de un usuario
-  /usuarios/{id}/favoritos:
-    get:
-      summary: lista los productos favortos de un usuario
-    delete:
-      summary: borra un producto favoritos del usuario
+      parameters:
+          - in: path
+            type: integer
+            name: id
+            description: User Id
+            required: true
+          - in: body
+            name: body
+            description: Update an user
+            required: true
+    responses:
+      '200':
+        description: successful operation
+      '404':
+        description: Not Found
+      '500':
+        description: Internal server error
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'
