@@ -17,6 +17,8 @@ REST API Project
 
 + Clone locally the using the following command in bash shell:
     ```git clone https://github.com/AJVelezRueda/delilah_project.git```
+
+    
     ```cd delilah_project```
 
 
